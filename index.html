@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GST Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        #calculator {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        button {
+            width: 48%;
+            padding: 10px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button.reset {
+            background-color: #e74c3c;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        #result {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="calculator">
+        <h1><Center>GST Calculator</h1>
+        <input type="number" id="amount" placeholder="Enter amount" />
+
+        <div class="button-container">
+            <button onclick="calculateGST()">Calculate GST</button>
+            <button class="reset" onclick="resetCalculator()">Reset</button>
+        </div>
+
+        <div id="result"></div>
+
+        <script>
+            function calculateGST() {
+    var total = parseFloat(document.getElementById('amount').value);
+    var cgst = 0, sgst = 0, ans = 0;
+    var i = 0;
+
+    while (i < total) {
+        sgst = i * 1.5 / 100;
+        cgst = i * 1.5 / 100;
+        ans = i + sgst + cgst;
+
+        if (ans >= total - 1) {
+            break;
+        }
+
+        i++;
+    }
+
+    // Round CGST and SGST to the nearest 0.25
+    cgst = Math.round(cgst * 4) / 4;
+    sgst = Math.round(sgst * 4) / 4;
+
+    // Recalculate the total based on rounded CGST and SGST
+    ans = i + sgst + cgst;
+
+    // If the rounded total is still less than the desired total, adjust it
+    if (ans < total) {
+        ans += 1; // Add 1 to adjust the total
+    }
+
+    document.getElementById('result').innerHTML =
+        "<p>Cost: " + i.toFixed(2) + "</p>" +
+        "<p>CGST: " + cgst.toFixed(2) + "</p>" +
+        "<p>SGST: " + sgst.toFixed(2) + "</p>" +
+        "<p>Total: " + ans.toFixed(2) + "</p>";
+}
+
+            function resetCalculator() {
+                document.getElementById('amount').value = '';
+                document.getElementById('result').innerHTML = '';
+            }
+        </script>
+    </div>
+</body>
+
+</html>
